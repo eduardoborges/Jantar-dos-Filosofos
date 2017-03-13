@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -21,11 +22,13 @@ import javax.swing.JTextField;
  * @author Pablo Felipe
  */
 public class Janela extends JPanel implements Runnable{
-    final int PENSANDO = 0;
+	private static final long serialVersionUID = 1L;
+	
+	final int PENSANDO = 0;
     final int COMENDO = 1;
     final int FAMINTO = 2;
     public String msg = "";
-    Thread animador;
+    Thread thread;
 
     public static int estado[] = new int[5]; //5
     public static Filosofo filosofo[] = new Filosofo[5]; //5
@@ -52,29 +55,22 @@ public class Janela extends JPanel implements Runnable{
         
         runButton.addActionListener(new ButtonClickListener());
         
-        
+        init();
+  
     }
 
-    private final class ButtonClickListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) {
-            String command = e.getActionCommand();  
-            Janela janela = new Janela();
-            janela.init();
-            janela.run();
-           
-        }		
-     }
+    
     
     public void init(){
-    	runButton.setText("Rodando");
+    	
         // Inicializa todos estados para zero
         for (int i = 0; i < estado.length; i++){
             estado[i] = 0;
         }
         // Verifica se o Thread de animacao esta vazio
-        if(animador == null){
-            animador = new Thread(this);
-            animador.start();
+        if(thread == null){
+            thread = new Thread(this);
+            thread.start();
         }
         Thread.currentThread().setPriority(1);
 
@@ -92,6 +88,8 @@ public class Janela extends JPanel implements Runnable{
         filosofo[3].start();
         filosofo[4].start();
     }
+    
+    
     public void paint(Graphics g){
         super.paint(g);
          
@@ -102,7 +100,7 @@ public class Janela extends JPanel implements Runnable{
         
         g.drawOval(50, 50, circleHeight, circleWidth);
 
-        // Para cada um dos filósofos será feito um desenho
+        // Para cada um dos filo um desenho
         for(int i = 0; i < 5; i++){            
             
             // Define a cor para cara tipo de estado
@@ -128,23 +126,17 @@ public class Janela extends JPanel implements Runnable{
            
         }
 
-        // ATIVA A SINCRONIA
         Toolkit.getDefaultToolkit().sync();
-        // PAUSA
-        g.dispose();
+        g.dispose(); // pausa
     }
     public void run(){
-         // execu�ao de 100000 itens
     	int itens = 100000;
         do{
-        	// Redesenha
-        	
-            repaint();
+            repaint(); // Redesenha
             // Dorme durante um tempo para redesenhar novamente
             try{
                 Thread.sleep(1000L);
             }catch (InterruptedException ex){
-                // Exibe uma mensagem de controle de erro
                 System.out.println("ERROR>" + ex.getMessage());
             }
             itens--;
@@ -152,5 +144,12 @@ public class Janela extends JPanel implements Runnable{
         while (itens > 0);
     }
 }
+
+class ButtonClickListener implements ActionListener{
+    public void actionPerformed(ActionEvent e) {
+        Janela janela = new Janela();
+        janela.init();       
+    }		
+ }
 
 

@@ -1,3 +1,5 @@
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -24,13 +26,13 @@ public class Filosofo extends Thread {
     //O Filosofo esta com fome
     public void comFome(){
         Janela.estado[this.ID] = 1;
-        System.out.println("O Filosofo " + getName() + "está FAMINTO");
+        System.out.println( getName() + "está FAMINTO");
     }
     
     //O Filosofo esta comendo
     public void Come(){  
         Janela.estado[this.ID] = 2;
-        System.out.println("O Filosofo " + getName() + "está COMENDO!");
+        System.out.println( getName() + "está COMENDO!");
         
         try{
             Thread.sleep(1000L);
@@ -43,7 +45,7 @@ public class Filosofo extends Thread {
     //Filosofo pensa
     public void Pensa(){
         Janela.estado[this.ID] = 3;
-        System.out.println("O Filosofo " + getName() + "está A PENSAR!");
+        System.out.println( getName() + "está A PENSAR!");
         try{
             Thread.sleep(1000L);
         }catch(InterruptedException ex){
@@ -52,26 +54,26 @@ public class Filosofo extends Thread {
     }
     
     public void largarGarfo(){ 
-    // Decrementa o semï¿½foro mutex principal da classe, isso permite
-    // informar que o atual mï¿½todo estï¿½ operando na mesa dos filï¿½sofos
-    //Vamos pensar um pouco? Dormir...
+    	//Vamos pensar um pouco? Dormir...
         Pensa();
-    //Vizinhos, meus garfos jï¿½ estï¿½o disponï¿½veis    
         Janela.filosofo[vizinhoEsquerda()].tentarGarfo();
         Janela.filosofo[vizinhoDireita()].tentarGarfo();
-    //Voltamos ao normal
     }
     
     public void pegarGarfo(){
         //Vamos ficar com fome?
         comFome();
-        //Serï¿½ que eu posso comer?
+        //Sera que eu posso comer?
         tentarGarfo();
     }
     public void tentarGarfo(){
         if(Janela.estado[this.ID] == 1 && Janela.estado[vizinhoEsquerda()] !=2 && Janela.estado[vizinhoDireita()] !=2){
             Come();
         }
+            
+           if (Janela.estado[vizinhoEsquerda()] ==1 && Janela.estado[vizinhoDireita()] ==1){
+        	   JOptionPane.showMessageDialog(null, "DeadLock!");
+           }
     }
     
     public void run(){ 
