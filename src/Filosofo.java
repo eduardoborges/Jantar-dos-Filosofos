@@ -21,16 +21,16 @@ public class Filosofo extends Thread {
        
     }
    
-    //O Filosofo está com fome
+    //O Filosofo esta com fome
     public void comFome(){
-        Grade.estado[this.ID] = 1;
-        System.out.println("O Filosofo " + getName() + "está FAMINTO");
+        Janela.estado[this.ID] = 1;
+        System.out.println("O Filosofo " + getName() + "est� FAMINTO");
     }
     
-    //O Filosofo está comendo
+    //O Filosofo esta comendo
     public void Come(){  
-        Grade.estado[this.ID] = 2;
-        System.out.println("O Filosofo " + getName() + "Está COMENDO!");
+        Janela.estado[this.ID] = 2;
+        System.out.println("O Filosofo " + getName() + "est� COMENDO!");
         
         try{
             Thread.sleep(1000L);
@@ -42,8 +42,8 @@ public class Filosofo extends Thread {
     
     //Filosofo pensa
     public void Pensa(){
-        Grade.estado[this.ID] = 3;
-        System.out.println("O Filosofo " + getName() + "Está A PENSAR!");
+        Janela.estado[this.ID] = 3;
+        System.out.println("O Filosofo " + getName() + "est� A PENSAR!");
         try{
             Thread.sleep(1000L);
         }catch(InterruptedException ex){
@@ -52,36 +52,25 @@ public class Filosofo extends Thread {
     }
     
     public void largarGarfo(){ 
-    // Decrementa o semáforo mutex principal da classe, isso permite
-    // informar que o atual método está operando na mesa dos filósofos
-        Grade.mutex.decrementar();
+    // Decrementa o sem�foro mutex principal da classe, isso permite
+    // informar que o atual m�todo est� operando na mesa dos fil�sofos
     //Vamos pensar um pouco? Dormir...
         Pensa();
-    //Vizinhos, meus garfos já estão disponíveis    
-        Grade.filosofo[vizinhoEsquerda()].tentarGarfo();
-        Grade.filosofo[vizinhoDireita()].tentarGarfo();
+    //Vizinhos, meus garfos j� est�o dispon�veis    
+        Janela.filosofo[vizinhoEsquerda()].tentarGarfo();
+        Janela.filosofo[vizinhoDireita()].tentarGarfo();
     //Voltamos ao normal
-        Grade.mutex.incrementar();
     }
     
     public void pegarGarfo(){
-       
-        Grade.mutex.decrementar();
-        
         //Vamos ficar com fome?
         comFome();
-        //Será que eu posso comer?
+        //Ser� que eu posso comer?
         tentarGarfo();
-        
-        Grade.mutex.incrementar();
-        
-        Grade.semaforos[this.ID].decrementar();
-        
     }
     public void tentarGarfo(){
-        if(Grade.estado[this.ID] == 1 && Grade.estado[vizinhoEsquerda()] !=2 && Grade.estado[vizinhoDireita()] !=2){
+        if(Janela.estado[this.ID] == 1 && Janela.estado[vizinhoEsquerda()] !=2 && Janela.estado[vizinhoDireita()] !=2){
             Come();
-            Grade.semaforos[this.ID].incrementar();
         }
     }
     
@@ -101,18 +90,18 @@ public class Filosofo extends Thread {
     }
     
     public int vizinhoDireita(){
-        // Rationa o valor em 5 posições, ou seja, se o ID deste filósofo acrescentado
+        // Rationa o valor em 5 posi��es, ou seja, se o ID deste fil�sofo acrescentado
         // de um for maior que quatro, passa a ser zero
         return (this.ID + 1) % 5;
     }
     
     public int vizinhoEsquerda(){
         if (this.ID == 0){
-            // Retorna a ultima posição
+            // Retorna a ultima posi��o
             return 4;
         }
         else{
-            // Rationa o valor em 5 posições, ou seja, se o ID deste filósofo decrescido
+            // Rationa o valor em 5 posi��es, ou seja, se o ID deste fil�sofo decrescido
             // de um for menor que zero, passa a ser quatro
             return (this.ID - 1) % 5;
         }

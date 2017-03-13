@@ -13,21 +13,17 @@ import javax.swing.JFrame;
  */
 public class JantarDosFilosofos extends JFrame{
     
-     public JantarDosFilosofos (){ // CRIA UMA NOVA GRADE NA TELA
-        add(new Grade());
+	private static final long serialVersionUID = 1L;
 
-        // DEFINE O TITULO
-        setTitle("Jantar dos Filósofos");
-        // INFORMA O MÉTODO DE SAÍDA
+	public JantarDosFilosofos (){ // CRIA UMA NOVA GRADE NA TELA
+        add(new Janela());
+        
+        
+        setTitle("Jantar dos Fil�sofos");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        // SETA O TAMANHO
         setSize(410, 410);
-        // SETA A LOCALIZAÇÃO
         setLocationRelativeTo(null);
-        // SETA A VISIBILIDADE
         setVisible(true);
-        // SETA SE É REDIMENSIONAVEL
         setResizable(false);
     }
 
